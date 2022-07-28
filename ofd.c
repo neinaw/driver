@@ -5,12 +5,12 @@
 #include <linux/kdev_t.h>
 #include <linux/types.h>
 
-static dev_t first;
+static dev_t first; //defined in <linux/types.h>, contains both major and minor numbers.
 
 int ofd_init(void) /* Constructor */{
-    printk(KERN_INFO "Namaskar: ofd registered\n");
+    printk(KERN_INFO "Namaskar: ofd registered\n"); //prints to /var/log/syslog
     int ret;
-    if( (ret = alloc_chrdev_region(&first,0,3,"test"))<0){
+    if((ret = alloc_chrdev_region(&first,0,3,"test"))<0){ //unsuccessful allocation
 	return ret;
     }
     printk(KERN_INFO "<Major, Minor>: <%d,%d>\n",MAJOR(first),MINOR(first));
