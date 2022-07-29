@@ -4,12 +4,14 @@
 #include <linux/fs.h>
 #include <linux/kdev_t.h>
 #include <linux/types.h>
+#include <linux/device.h>
+#include <linux/cdev.h>
 
 static dev_t first; //defined in <linux/types.h>, contains both major and minor numbers.
 
 int ofd_init(void) /* Constructor */{
-    printk(KERN_INFO "Namaskar: ofd registered\n"); //prints to /var/log/syslog
     int ret;
+    printk(KERN_INFO "Namaskar: ofd registered\n"); //prints to /var/log/syslog
     if((ret = alloc_chrdev_region(&first,0,3,"test"))<0){ //unsuccessful allocation
 	return ret;
     }
