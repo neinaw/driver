@@ -11,4 +11,4 @@ Linux Kernel API doc:
 
 https://www.kernel.org/doc/htmldocs/kernel-api/
 
-Run make after changing the <filename>.o object file name in the Makefile.
+Run make as make file=<filename_without_extension>
