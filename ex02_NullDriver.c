@@ -4,17 +4,17 @@
 #include <linux/fs.h>
 #include <linux/kdev_t.h>
 #include <linux/types.h>
-#include <linux/device.h>
-#include <linux/cdev.h>
-#include <asm/uaccess.h> // protects against kernel oops.
+#include <linux/device.h> //for class_create(), device_create(), device_destroy(), etc.
+#include <linux/cdev.h> //for struct cdev c_dev, cdev_init(), cdev_add(), ...
+#include <asm/uaccess.h> //protects against kernel oops.
 
-static dev_t first; //defined in <linux/types.h>, contains both major and minor numbers.
+static dev_t first; 
 static struct cdev c_dev; // global character device structure variable
 static struct class *cl; // global device class variable
 
 static char c; // preserving the last character
 
-static int my_open(struct inode *i, struct file *f){
+static int __init my_open(struct inode *i, struct file *f){
     printk(KERN_INFO "Driver: open()\n");
     return 0;
 }
@@ -29,6 +29,9 @@ static ssize_t my_read(struct file *f, char __user *buf, size_t len, loff_t *off
     printk(KERN_INFO "Driver: read()\n");
     if (*off == 0){
         if (copy_to_user(buf, &c, 1) != 0)
+	    /*
+	    copy block of data from userspace to kernel space
+	    */
             return -EFAULT;
         else{
             (*off)++;
@@ -47,8 +50,10 @@ static ssize_t my_write(struct file *f, const char __user *buf, size_t len, loff
 	return len;
 }
 
-static struct file_operations pugs_fops = { // specify what the read(), write(), etc. functions actually are. (Defined above)
-    .owner = THIS_MODULE,                   // exectued after the functions are called.
+static struct file_operations pugs_fops = { // specify what the read(), write(), etc.
+                                            // functions actually are. (Defined above)
+					    // defined in <linux/fs.h>
+    .owner = THIS_MODULE,
     .open = my_open,
     .release = my_close,
     .read = my_read,
@@ -64,10 +69,17 @@ int ofd_init(void) /* Constructor */{
 	return ret;
     }
     if (IS_ERR(cl = class_create(THIS_MODULE, "chardrv"))){
+	/*
+	creates a class called "chardrv"
+	in /sys/class
+	*/
         unregister_chrdev_region(first, 1);
         return PTR_ERR(cl);
     }
     if (IS_ERR(dev_ret = device_create(cl, NULL, first, NULL, "mynull"))){
+	/*
+	https://manpages.debian.org/jessie/linux-manual-3.16/device_create.9.en.html
+	*/
         class_destroy(cl);
         unregister_chrdev_region(first, 1);
         return PTR_ERR(dev_ret);
