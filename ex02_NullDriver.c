@@ -14,7 +14,7 @@ static struct class *cl; // global device class variable
 
 static char c; // preserving the last character
 
-static int __init my_open(struct inode *i, struct file *f){
+static int my_open(struct inode *i, struct file *f){
     printk(KERN_INFO "Driver: open()\n");
     return 0;
 }
