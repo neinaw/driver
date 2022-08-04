@@ -6,7 +6,8 @@
 #include <linux/types.h>
 #include <linux/device.h> //for class_create(), device_create(), device_destroy(), etc.
 #include <linux/cdev.h> //for struct cdev c_dev, cdev_init(), cdev_add(), ...
-#include <asm/uaccess.h> //protects against kernel oops.
+//#include <asm/uaccess.h> //protects against kernel oops, and contains copy_to_user(), etc.
+#include <linux/uacess.h> //use either
 
 static dev_t first; 
 static struct cdev c_dev; // global character device structure variable
