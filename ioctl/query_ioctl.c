@@ -21,6 +21,12 @@ static int my_close(struct inode *i, struct file *f){
     return 0;
 }
 static long my_ioctl(struct file *f, unsigned int cmd, unsigned long arg){
+    /*******IMP*********
+    In kernel, unsigned long is often used as a substitution for pointers,
+    as pointers always have that size on every architecture.
+    So generic memory addresses in the kernel are usually unsigned long.
+    Treat arg as a pointer
+    */
     query_arg_t q;
 
     switch (cmd){
@@ -28,7 +34,7 @@ static long my_ioctl(struct file *f, unsigned int cmd, unsigned long arg){
 	    q.var_1 = var_1;
 	    q.var_2 = var_2;
 	    q.var_3 = var_3;
-	    if (copy_to_user((query_arg_t *)arg, &q, sizeof(query_arg_t))){
+	    if (copy_to_user((query_arg_t *)arg, &q, sizeof(query_arg_t))){//typecast arg to query_arg_t
 		return -EACCES;
 	    }
 	    break;
