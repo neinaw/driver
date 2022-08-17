@@ -1,4 +1,5 @@
 # If called directly from the command line, invoke the kernel build system.
+CC = gcc
 ifeq ($(KERNELRELEASE),)
 
 	KERNEL_SOURCE := /lib/modules/$(shell uname -r)/build
