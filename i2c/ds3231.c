@@ -16,7 +16,7 @@ uint8_t min = 0x01; //minutes register
 uint8_t hour = 0x02; //hours register
 uint8_t date = 0x04; //date register
 uint8_t ibyte = 0x11; //integer part of time
-uint8_t fbyte = 0x11; //fractional part of time
+uint8_t fbyte = 0x12; //fractional part of time
 
 int cur_date = 0;
 char time[20];
