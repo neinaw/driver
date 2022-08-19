@@ -27,7 +27,7 @@ int main(){
     write(fd, &s, 1);
     do{
 	read(fd, &reply, 1);
-    } while(reply >> 7 == 1);
+    } while(reply >> 7 != 1);
 
     char read_results;
 
