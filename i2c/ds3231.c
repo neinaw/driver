@@ -26,7 +26,7 @@ ssize_t my_write(int fd, const void *buf, size_t count){
     ssize_t ans = write(fd, buf, count);
     if(ans == count) return ans;
     else{
-	perror("Write Error\n");
+	perror("Write Error");
 	return ans;
     }
 }
@@ -35,7 +35,7 @@ ssize_t my_read(int fd, void *buf, size_t count){
     ssize_t ans = read(fd, buf, count);
     if(ans == count) return ans;
     else{
-	perror("Read Error\n");
+	perror("Read Error");
 	return ans;
     }
 }
@@ -66,7 +66,7 @@ int get_date(){
     fd = open(DEV, O_RDWR);
 
     if(ioctl(fd, I2C_SLAVE, addr) < 0){
-	perror("Failed to talk to slave\n");
+	perror("Failed to talk to slave");
 	close(fd);
 	return -1;
     }
@@ -87,7 +87,7 @@ int get_time(){
     fd = open(DEV, O_RDWR);
 
     if(ioctl(fd, I2C_SLAVE, addr) < 0){
-	perror("Failed to talk to slave\n");
+	perror("Failed to talk to slave");
 	close(fd);
 	return -1;
     }
@@ -129,7 +129,7 @@ int get_temp(){
     fd = open(DEV, O_RDWR);
 
     if(ioctl(fd, I2C_SLAVE, addr) < 0){
-	perror("Failed to talk to slave\n");
+	perror("Failed to talk to slave");
 	close(fd);
 	return -1;
     }
