@@ -156,6 +156,9 @@ int get_size(){
 
 int main(){
     FILE *fp = fopen(DEST, "w+");
+    get_date();
+    get_time();
+    get_temp();
     while(get_size() < 1000){
 	fprintf(fp, "Date:\t%d\nTime:\t%s\nTemperature:\t%f\n",cur_date, time, temp);
 	sleep(10);
